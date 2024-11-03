@@ -1,0 +1,41 @@
+version: '3'
+services:
+  backend:
+    build:
+      context: ./backend
+      dockerfile: Dockerfile
+    ports:
+      - "${BACKEND_PORT:-3001}:3000"  # Default to 3001 if BACKEND_PORT is not set
+    environment:
+      - DATABASE_URL=${DATABASE_URL}
+      - JWT_SECRET=${JWT_SECRET}
+      - JWT_EXPIRATION=${JWT_EXPIRATION}
+      - FRONTEND_URL=${FRONTEND_URL}
+    volumes:
+      - ./backend:/app  # Sync local backend code to container
+      - /app/node_modules  # Prevent node_modules from syncing
+    depends_on:
+      - mongo
+
+  frontend:
+    build:
+      context: ./frontend
+      dockerfile: Dockerfile
+    ports:
+      - "${FRONTEND_PORT:-3000}:3000"  # Default to 3000 if FRONTEND_PORT is not set
+    environment:
+      - NEXT_PUBLIC_BACKEND_URL=${NEXT_PUBLIC_BACKEND_URL}
+    volumes:
+      - ./frontend:/app  # Sync local frontend code to container
+      - /app/node_modules  # Prevent node_modules from syncing
+
+  mongo:
+    image: mongo:5.0
+    container_name: mongo
+    ports:
+      - "${DATABASE_PORT:-27017}:27017"
+    volumes:
+      - mongo_data:/data/db
+
+volumes:
+  mongo_data:

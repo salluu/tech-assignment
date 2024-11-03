@@ -1,0 +1,17 @@
+{
+  "name": "test-exercise-nextjs",
+  "version": "1.0.0",
+  "main": "index.js",
+  "repository": "https://github.com/salluu/test-exercise-nextjs.git",
+  "author": "Salman Qayyum <28986889+salluu@users.noreply.github.com>",
+  "license": "MIT",
+  "scripts": {
+    "dev:frontend": "yarn --cwd frontend dev",
+    "dev:backend": "yarn --cwd backend start:dev",
+    "dev": "concurrently \"yarn dev:frontend\" \"yarn dev:backend\""
+  },
+  "devDependencies": {
+    "concurrently": "^9.0.1",
+    "jest": "^29.7.0"
+  }
+}
